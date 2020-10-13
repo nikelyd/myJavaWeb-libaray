@@ -1,5 +1,6 @@
 package com.southwind.controller;
 
+import com.southwind.entity.Admin;
 import com.southwind.entity.Borrow;
 import com.southwind.service.BookService;
 import com.southwind.service.impl.BookServiceImpl;
@@ -9,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
@@ -19,6 +21,8 @@ public class AdminServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String method = req.getParameter("method");
+        HttpSession session = req.getSession();
+        Admin admin = (Admin)session.getAttribute("admin");
         if(method == null){
             method = "findAllBorrow";
         }
@@ -34,10 +38,19 @@ public class AdminServlet extends HttpServlet {
                 req.getRequestDispatcher("admin.jsp").forward(req,resp);
                 break;
             case "handle":
+                String idStr = req.getParameter("id");
+                String stateStr = req.getParameter("state");
+                Integer id = Integer.parseInt(idStr);
+                Integer state = Integer.parseInt(stateStr);
+                bookService.handleBorrow(id,state,admin.getId());
+                resp.sendRedirect("/admin?page=1");
+                break;
+            case "getBorrowed":
 
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + method);
         }
     }
+
 }
