@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 每页展示6条数据
+ *
  * @author lyd
  */
 public class BookServiceImpl implements BookService {
@@ -90,5 +90,10 @@ public class BookServiceImpl implements BookService {
             page = count/LIMIT + 1;
         }
         return page;
+    }
+
+    @Override
+    public void handleBorrow(Integer borrowId, Integer state, Integer adminId) {
+        borrowRepository.handle(borrowId,state,adminId);
     }
 }

@@ -10,4 +10,5 @@ public interface BorrowRepository {
     public List<Borrow> findAllByState(Integer state,Integer index, Integer limit);
     public int count(Integer id);
     public int countByState(Integer state);
+    public void handle(Integer borrowId, Integer state, Integer adminId);
 }

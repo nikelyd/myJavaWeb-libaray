@@ -1,5 +1,6 @@
 package com.southwind.repository.impl;
 
+import com.mysql.cj.x.protobuf.MysqlxPrepare;
 import com.southwind.entity.Book;
 import com.southwind.entity.Borrow;
 import com.southwind.entity.Reader;
@@ -18,8 +19,9 @@ public class BorrowRepositoryImpl implements BorrowRepository {
     public void insert(Integer bookid, Integer readerid, String borrowtime, String returntime, Integer adminid, Integer state) {
         Connection connection = JDBCTools.getConnection();
         String sql = "insert into borrow(bookid,readerid,borrowtime,returntime,state) values (?,?,?,?,0)";
+        PreparedStatement preparedStatement = null;
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1,bookid);
             preparedStatement.setInt(2,readerid);
             preparedStatement.setString(3,borrowtime);
@@ -27,6 +29,8 @@ public class BorrowRepositoryImpl implements BorrowRepository {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            JDBCTools.release(connection,preparedStatement,null);
         }
     }
 
@@ -96,6 +100,8 @@ public class BorrowRepositoryImpl implements BorrowRepository {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            JDBCTools.release(connection,preparedStatement,resultSet);
         }
         return count;
     }
@@ -116,7 +122,27 @@ public class BorrowRepositoryImpl implements BorrowRepository {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            JDBCTools.release(connection,preparedStatement,resultSet);
         }
         return count;
+    }
+
+    @Override
+    public void handle(Integer borrowId, Integer state, Integer adminId) {
+        Connection connection = JDBCTools.getConnection();
+        PreparedStatement preparedStatement = null;
+        String sql = "update borrow set state = ?, adminid = ? where id = ?";
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1,state);
+            preparedStatement.setInt(2,adminId);
+            preparedStatement.setInt(3,borrowId);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            JDBCTools.release(connection,preparedStatement,null);
+        }
     }
 }
