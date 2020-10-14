@@ -30,6 +30,7 @@ public class BookServlet extends HttpServlet {
         Reader reader = (Reader)session.getAttribute("reader");
         switch (method){
             case "findAll":
+                // 展示所有书籍信息
                 String pageStr = req.getParameter("page");
                 Integer page = Integer.parseInt(pageStr);
                 List<Book> list = bookService.findAll(page);

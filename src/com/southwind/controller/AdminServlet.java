@@ -14,6 +14,10 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * 功能：处理所有管理员（Admin）相关的事务
+ * @author lyd
+ */
 @WebServlet("/admin")
 public class AdminServlet extends HttpServlet {
 
@@ -28,6 +32,7 @@ public class AdminServlet extends HttpServlet {
         }
         switch (method){
             case "findAllBorrow":
+                // 展示所有用户的借阅信息
                 String pageStr = req.getParameter("page");
                 int page = Integer.parseInt(pageStr);
                 List<Borrow> borrowList = bookService.findAllBorrowByState(0,page);
@@ -38,6 +43,7 @@ public class AdminServlet extends HttpServlet {
                 req.getRequestDispatcher("admin.jsp").forward(req,resp);
                 break;
             case "handle":
+                // 操作借阅请求：同意state==1，拒绝state==2
                 String idStr = req.getParameter("id");
                 String stateStr = req.getParameter("state");
                 Integer id = Integer.parseInt(idStr);
@@ -51,6 +57,7 @@ public class AdminServlet extends HttpServlet {
                 }
                 break;
             case "getBorrowed":
+                // 展示所有已借阅（state==1）的图书
                 pageStr = req.getParameter("page");
                 page = Integer.parseInt(pageStr);
                 borrowList = bookService.findAllBorrowByState(1,page);

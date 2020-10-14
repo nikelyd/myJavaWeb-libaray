@@ -12,6 +12,10 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.http.HttpRequest;
 
+/**
+ * @author lyd
+ * 登录：未登录读者账号，返回登录界面
+ */
 @WebFilter("/book")
 public class ReaderFilter implements Filter {
     @Override

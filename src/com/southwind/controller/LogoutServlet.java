@@ -8,6 +8,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+/**
+ * @author lyd
+ * 功能：注销，返回登录界面
+ */
 @WebServlet("/logout")
 public class LogoutServlet extends HttpServlet {
     @Override

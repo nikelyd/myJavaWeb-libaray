@@ -42,6 +42,7 @@ public class LoginServlet extends HttpServlet {
             HttpSession session = req.getSession();
             switch (type){
                 case "reader":
+                    // 跳转到读者界面
                     Reader reader = (Reader) object;
                     session.setAttribute("reader",reader);
                     resp.sendRedirect("/book?page=1");

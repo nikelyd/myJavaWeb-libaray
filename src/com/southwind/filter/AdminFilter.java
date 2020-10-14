@@ -9,6 +9,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+/**
+ * @author lyd
+ * 功能：未登录Admin，返回登录界面
+ */
 @WebFilter("/admin")
 public class AdminFilter implements Filter {
     @Override
