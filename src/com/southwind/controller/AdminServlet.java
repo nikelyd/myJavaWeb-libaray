@@ -43,10 +43,22 @@ public class AdminServlet extends HttpServlet {
                 Integer id = Integer.parseInt(idStr);
                 Integer state = Integer.parseInt(stateStr);
                 bookService.handleBorrow(id,state,admin.getId());
-                resp.sendRedirect("/admin?page=1");
+                if(state == 1 || state == 2){
+                    resp.sendRedirect("/admin?page=1");
+                }
+                if(state == 3){
+                    resp.sendRedirect("/admin?method=getBorrowed&page=1");
+                }
                 break;
             case "getBorrowed":
-
+                pageStr = req.getParameter("page");
+                page = Integer.parseInt(pageStr);
+                borrowList = bookService.findAllBorrowByState(1,page);
+                req.setAttribute("list",borrowList);
+                req.setAttribute("dataPrePage",6);
+                req.setAttribute("currentPage",page);
+                req.setAttribute("pages",bookService.getBorrowPagesByState(1));
+                req.getRequestDispatcher("return.jsp").forward(req,resp);
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + method);
